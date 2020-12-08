@@ -1,0 +1,7 @@
+target/
+intermediate/
+
+.vs/
+*.bat
+*.sln
+*vcxproj*

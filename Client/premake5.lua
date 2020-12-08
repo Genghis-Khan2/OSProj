@@ -1,4 +1,4 @@
-workspace "Server"
+workspace "Client"
 	architecture "x86_64"
 	configurations
 	{
@@ -6,7 +6,7 @@ workspace "Server"
 		"Debug"
 	}	
 
-project "Server"
+project "Client"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"

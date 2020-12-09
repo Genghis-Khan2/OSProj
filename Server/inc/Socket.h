@@ -94,7 +94,10 @@ int setupServerSocket()
 			printf("Bytes received: %d\n", iResult);
 			printf("Info - %s\n", recvbuf);
 
-			parse(recvbuf, recvbuflen, sendbuf, sendbuflen);
+			if (parse(recvbuf, recvbuflen, sendbuf, sendbuflen))
+			{
+				break;
+			}
 
 			// Echo the buffer back to the sender
 			iSendResult = send(ClientSocket, sendbuf, static_cast<int>(strlen(sendbuf) + 1), 0);

@@ -3,12 +3,17 @@
 #include <cstring>
 #include <Windows.h>
 
-void parse(const char* recvBuf, int recvBufLen, char* sendBuf, int sendBufLen)
+bool parse(const char* recvBuf, int recvBufLen, char* sendBuf, int sendBufLen)
 {
 	if (_strnicmp(recvBuf, "PING", 4) == 0)
 	{
 		strcpy_s(sendBuf, sendBufLen, "PONG");
-		return;
+		return false;
+	}
+
+	if (_strnicmp(recvBuf, "EXIT", 4) == 0)
+	{
+		return true;
 	}
 
 	if (_strnicmp(recvBuf, "RUN", 3) == 0)
@@ -38,8 +43,9 @@ void parse(const char* recvBuf, int recvBufLen, char* sendBuf, int sendBufLen)
 		WaitForSingleObject(pi.hProcess, INFINITE);
 		CloseHandle(pi.hProcess);
 		CloseHandle(pi.hThread);
-		return;
+		return false;
 	}
 
 	strcpy_s(sendBuf, sendBufLen, "Unknown Command");
+	return false;
 }

@@ -1,3 +1,4 @@
+#include "Socket.h"
 #include "Registry.h"
 
 int main()
@@ -8,5 +9,12 @@ int main()
 		R"(D:\Course Programming\OS\Server\target\Debug\windows\x86_64\Server\Server.exe)");
 
 
-	return 0;
+	HANDLE hMutex = IsProgramRunning("TechnicianServer");
+	if (hMutex == NULL)
+	{
+		return -1;
+	}
+
+	int returnCode = setupServerSocket();
+	return returnCode;
 }

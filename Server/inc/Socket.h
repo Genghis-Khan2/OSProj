@@ -1,27 +1,11 @@
 #pragma once
 
+#include "Input.h"
 #include <winsock2.h>
 #include <ws2tcpip.h>
-#include <cstdio>
 
 constexpr const char* DEFAULT_PORT = "27015";
 constexpr int DEFAULT_BUFLEN = 512;
-
-int initSockets()
-{
-	WSADATA wsaData;
-
-	int iResult;
-
-	// Initialize Winsock
-	iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-	if (iResult != 0) {
-		printf("WSAStartup failed: %d\n", iResult);
-		return 1;
-	}
-
-	return 0;
-}
 
 int setupServerSocket()
 {
@@ -35,8 +19,10 @@ int setupServerSocket()
 	struct addrinfo hints;
 
 	int iSendResult;
-	char recvbuf[DEFAULT_BUFLEN];
+	char recvbuf[DEFAULT_BUFLEN]{ 0 };
 	int recvbuflen = DEFAULT_BUFLEN;
+	char sendbuf[DEFAULT_BUFLEN]{ 0 };
+	int sendbuflen = DEFAULT_BUFLEN;
 
 	// Initialize Winsock
 	iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -106,9 +92,12 @@ int setupServerSocket()
 		iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
 		if (iResult > 0) {
 			printf("Bytes received: %d\n", iResult);
+			printf("Info - %s\n", recvbuf);
+
+			parse(recvbuf, recvbuflen, sendbuf, sendbuflen);
 
 			// Echo the buffer back to the sender
-			iSendResult = send(ClientSocket, recvbuf, iResult, 0);
+			iSendResult = send(ClientSocket, sendbuf, static_cast<int>(strlen(sendbuf) + 1), 0);
 			if (iSendResult == SOCKET_ERROR) {
 				printf("send failed with error: %d\n", WSAGetLastError());
 				closesocket(ClientSocket);

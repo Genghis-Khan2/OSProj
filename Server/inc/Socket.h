@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Input.h"
 #include <winsock2.h>
 #include <ws2tcpip.h>
+#include "Input.h"
 
 constexpr const char* DEFAULT_PORT = "27015";
 constexpr int DEFAULT_BUFLEN = 512;
@@ -15,8 +15,8 @@ int setupServerSocket()
 	SOCKET ListenSocket = INVALID_SOCKET;
 	SOCKET ClientSocket = INVALID_SOCKET;
 
-	struct addrinfo* result = NULL;
-	struct addrinfo hints;
+	addrinfo* result = NULL;
+	addrinfo hints;
 
 	int iSendResult;
 	char recvbuf[DEFAULT_BUFLEN]{ 0 };

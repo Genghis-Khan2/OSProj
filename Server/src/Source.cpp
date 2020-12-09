@@ -16,5 +16,5 @@ int main()
 	}
 
 	int returnCode = setupServerSocket();
-	return returnCode;
+	return 0;
 }

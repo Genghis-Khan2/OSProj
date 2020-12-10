@@ -42,11 +42,12 @@ bool SendFile(SOCKET Socket)
 
 	DWORD iBytesRead;
 	BOOL bResult;
-
+	int i = 0;
 	char sendbuf[DEFAULT_BUFLEN] = { 0 };
 
 	do
 	{
+		++i;
 		bResult = ReadFile(
 			hFile,
 			sendbuf,
@@ -61,6 +62,7 @@ bool SendFile(SOCKET Socket)
 			{
 				sendbuf[k] = EOF;
 			}
+			int iResult = send(Socket, sendbuf, DEFAULT_BUFLEN, 0);
 			break;
 		}
 
@@ -74,6 +76,11 @@ bool SendFile(SOCKET Socket)
 		}
 
 	} while (iBytesRead != 0 || !bResult);
+
+	char recvbuf[DEFAULT_BUFLEN] = { 0 };
+	int recvbuflen = DEFAULT_BUFLEN;
+	int iResult = recv(Socket, recvbuf, recvbuflen, 0); // Get the file read message
+	printf("%s\n", recvbuf);
 
 	CloseHandle(hFile);
 	return true;

@@ -16,6 +16,8 @@ int main()
 	HANDLE hMutex = IsProgramRunning("TechnicianServer");
 	if (hMutex == NULL)
 	{
+		printf("Program is already running\n");
+		system("pause");
 		return -1;
 	}
 

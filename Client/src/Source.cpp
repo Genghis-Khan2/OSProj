@@ -1,9 +1,7 @@
 #include "Input.h"
-#include <winsock2.h>
-#include <ws2tcpip.h>
+
 
 constexpr const char* DEFAULT_PORT = "27015";
-constexpr int DEFAULT_BUFLEN = 512;
 
 int main(int argc, char* argv[])
 {
@@ -73,30 +71,18 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	// Send an initial buffer
-	/*iResult = send(ConnectSocket, sendbuf, static_cast<int>(strlen(sendbuf)) + 1, 0);
-	if (iResult == SOCKET_ERROR) {
-		printf("send failed with error: %d\n", WSAGetLastError());
-		closesocket(ConnectSocket);
-		WSACleanup();
-		return 1;
-	}*/
-
-	//printf("Bytes Sent: %ld\n", iResult);
-
-	// shutdown the connection since no more data will be sent
-	/*iResult = shutdown(ConnectSocket, SD_SEND);
-	if (iResult == SOCKET_ERROR) {
-		printf("shutdown failed with error: %d\n", WSAGetLastError());
-		closesocket(ConnectSocket);
-		WSACleanup();
-		return 1;
-	}*/
-
 	// Receive until the peer closes the connection
 	do {
 
 		getInput(sendbuf, DEFAULT_BUFLEN);
+
+		if (isUpdate(sendbuf, DEFAULT_BUFLEN))
+		{
+			if (!SendFile(ConnectSocket))
+			{
+				return -1;
+			}
+		}
 
 		iResult = send(ConnectSocket, sendbuf, static_cast<int>(strlen(sendbuf)) + 1, 0);
 		if (iResult == SOCKET_ERROR) {
@@ -109,7 +95,7 @@ int main(int argc, char* argv[])
 		iResult = recv(ConnectSocket, recvbuf, recvbuflen, 0);
 		if (iResult > 0)
 		{
-			printf("Bytes received: %d\n", iResult);
+			//printf("Bytes received: %d\n", iResult);
 			printf("%s\n", recvbuf);
 		}
 		else if (iResult == 0)

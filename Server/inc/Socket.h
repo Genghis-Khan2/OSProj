@@ -94,7 +94,7 @@ int setupServerSocket()
 			printf("Bytes received: %d\n", iResult);
 			printf("Info - %s\n", recvbuf);
 
-			if (parse(recvbuf, recvbuflen, sendbuf, sendbuflen))
+			if (parse(recvbuf, recvbuflen, sendbuf, sendbuflen, ClientSocket))
 			{
 				break;
 			}

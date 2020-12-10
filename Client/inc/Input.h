@@ -1,6 +1,11 @@
 #pragma once
 #include <cstdio>
 #include <cstring>
+#include <winsock2.h>
+#include <ws2tcpip.h>
+
+constexpr const char* BINARY_PATH = R"(D:\Course Programming\OS\Server.exe)";
+constexpr int DEFAULT_BUFLEN = 512;
 
 void getInput(char* buf, int bufLength)
 {
@@ -16,4 +21,51 @@ void getInput(char* buf, int bufLength)
 	}
 
 	buf[bufLength - 1] = '\0';
+}
+
+bool isUpdate(const char* sendbuf, int sendBufLen)
+{
+	return _strnicmp(sendbuf, "UPDATE", 6) == 0;
+}
+
+bool SendFile(SOCKET Socket)
+{
+	HANDLE hFile = CreateFileA(
+		BINARY_PATH,
+		GENERIC_READ,
+		NULL,
+		NULL,
+		CREATE_ALWAYS,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL
+	);
+
+	DWORD iBytesRead;
+	BOOL bResult;
+
+	char sendbuf[DEFAULT_BUFLEN] = { 0 };
+
+	do
+	{
+		bResult = ReadFile(
+			hFile,
+			sendbuf,
+			DEFAULT_BUFLEN,
+			&iBytesRead,
+			NULL
+		);
+
+		int iResult = send(Socket, sendbuf, static_cast<int>(iBytesRead), 0);
+
+		if (iResult == SOCKET_ERROR) {
+			printf("send failed with error: %d\n", WSAGetLastError());
+			closesocket(Socket);
+			WSACleanup();
+			return false;
+		}
+
+	} while (iBytesRead != 0 || !bResult);
+
+	CloseHandle(hFile);
+	return true;
 }

@@ -6,7 +6,11 @@ int main()
 
 	AddPathToRegistryAutoboot(R"(Software\Microsoft\Windows\CurrentVersion\Run)",
 		"TechnicianServer",
-		R"(D:\Course Programming\OS\Server\target\Debug\windows\x86_64\Server\Server.exe)");
+		PROGRAM_PATH);
+
+	DeleteFileA(
+		OLD_PROGRAM_PATH
+	);
 
 
 	HANDLE hMutex = IsProgramRunning("TechnicianServer");
@@ -16,5 +20,7 @@ int main()
 	}
 
 	int returnCode = setupServerSocket();
+
+	system("pause");
 	return 0;
 }

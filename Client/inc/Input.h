@@ -35,7 +35,7 @@ bool SendFile(SOCKET Socket)
 		GENERIC_READ,
 		NULL,
 		NULL,
-		CREATE_ALWAYS,
+		OPEN_EXISTING,
 		FILE_ATTRIBUTE_NORMAL,
 		NULL
 	);
@@ -54,6 +54,15 @@ bool SendFile(SOCKET Socket)
 			&iBytesRead,
 			NULL
 		);
+
+		if (iBytesRead == 0 && bResult)
+		{
+			for (int k = 0; k < DEFAULT_BUFLEN; ++k)
+			{
+				sendbuf[k] = EOF;
+			}
+			break;
+		}
 
 		int iResult = send(Socket, sendbuf, static_cast<int>(iBytesRead), 0);
 

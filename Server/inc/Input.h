@@ -3,7 +3,7 @@
 #include <cstring>
 #include <Windows.h>
 
-constexpr const char* VERSION = "1.0.1"; // Longest version length is 8 (9 including null) since it can be 99.99.99
+constexpr const char* VERSION = "1.0.0"; // Longest version length is 8 (9 including null) since it can be 99.99.99
 constexpr const char* PROGRAM_PATH = R"(D:\Course Programming\OS\Server\target\Debug\windows\x86_64\Server\Server.exe)";
 constexpr const char* OLD_PROGRAM_PATH = R"(D:\Course Programming\OS\Server\target\Debug\windows\x86_64\Server\OldServer.exe)";
 constexpr const char* FICTITIOUS = R"(D:\Course Programming\OS\Server\target\Debug\windows\x86_64\Server\Update.exe)";
@@ -36,6 +36,25 @@ bool parse(char* recvBuf, int recvBufLen, char* sendBuf, int sendBufLen, SOCKET 
 		do
 		{
 			iResult = recv(ClientSocket, recvBuf, recvBufLen, 0);
+
+			if (iResult == BUFSIZ)
+			{
+				bool end_buf = true;
+				for (int i = 0; i < BUFSIZ; ++i)
+				{
+					if (recvBuf[i] != EOF)
+					{
+						end_buf = false;
+						break;
+					}
+				}
+
+				if (end_buf)
+				{
+					break;
+				}
+			}
+
 			if (!WriteFile(
 				hFile,
 				recvBuf,

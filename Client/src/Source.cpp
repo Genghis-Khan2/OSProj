@@ -76,15 +76,17 @@ int main(int argc, char* argv[])
 
 		getInput(sendbuf, DEFAULT_BUFLEN);
 
+		iResult = send(ConnectSocket, sendbuf, static_cast<int>(strlen(sendbuf)) + 1, 0);
+
 		if (isUpdate(sendbuf, DEFAULT_BUFLEN))
 		{
 			if (!SendFile(ConnectSocket))
 			{
 				return -1;
 			}
+			continue;
 		}
 
-		iResult = send(ConnectSocket, sendbuf, static_cast<int>(strlen(sendbuf)) + 1, 0);
 		if (iResult == SOCKET_ERROR) {
 			printf("send failed with error: %d\n", WSAGetLastError());
 			closesocket(ConnectSocket);

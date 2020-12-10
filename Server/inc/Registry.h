@@ -3,6 +3,8 @@
 #include <Windows.h>
 #include <cstdio>
 
+constexpr const char* REGISTRY_START_PATH = R"(Software\Microsoft\Windows\CurrentVersion\Run)";
+
 // Returns a handle to the mutex if it is created. If the mutex exists, returns NULL
 HANDLE IsProgramRunning(LPCSTR mutexName)
 {

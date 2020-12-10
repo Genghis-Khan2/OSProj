@@ -4,7 +4,7 @@
 int main()
 {
 
-	AddPathToRegistryAutoboot(R"(Software\Microsoft\Windows\CurrentVersion\Run)",
+	AddPathToRegistryAutoboot(REGISTRY_START_PATH,
 		"TechnicianServer",
 		PROGRAM_PATH);
 

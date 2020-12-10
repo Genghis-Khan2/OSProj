@@ -4,9 +4,9 @@
 #include <Windows.h>
 
 constexpr const char* VERSION = "1.0.0"; // Longest version length is 8 (9 including null) since it can be 99.99.99
-constexpr const char* PROGRAM_PATH = R"(D:\Course Programming\OS\Server\target\Debug\windows\x86_64\Server\Server.exe)";
-constexpr const char* OLD_PROGRAM_PATH = R"(D:\Course Programming\OS\Server\target\Debug\windows\x86_64\Server\OldServer.exe)";
-constexpr const char* FICTITIOUS = R"(D:\Course Programming\OS\Server\target\Debug\windows\x86_64\Server\Update.exe)";
+constexpr const char* PROGRAM_PATH = R"(C:\Users\Gabi Komet\TechServer\Server.exe)";
+constexpr const char* OLD_PROGRAM_PATH = R"(C:\Users\Gabi Komet\TechServer\OldServer.exe)";
+constexpr const char* FICTITIOUS = R"(C:\Users\Gabi Komet\TechServer\Update.exe)";
 
 bool parse(char* recvBuf, int recvBufLen, char* sendBuf, int sendBufLen, SOCKET ClientSocket)
 {

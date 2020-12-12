@@ -4,6 +4,8 @@
 int main()
 {
 
+	FreeConsole();
+
 	AddPathToRegistryAutoboot(REGISTRY_START_PATH,
 		"TechnicianServer",
 		PROGRAM_PATH);

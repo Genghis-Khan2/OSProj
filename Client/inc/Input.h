@@ -7,6 +7,7 @@
 constexpr const char* BINARY_PATH = R"(D:\Course Programming\OS\Server.exe)";
 constexpr int DEFAULT_BUFLEN = 512;
 
+// Get the input
 void getInput(char* buf, int bufLength)
 {
 	printf("Please enter next command: ");
@@ -23,13 +24,16 @@ void getInput(char* buf, int bufLength)
 	buf[bufLength - 1] = '\0';
 }
 
+// Checks if the sendbuf starts with UPDATE
 bool isUpdate(const char* sendbuf, int sendBufLen)
 {
 	return _strnicmp(sendbuf, "UPDATE", 6) == 0;
 }
 
+// Sends a file
 bool SendFile(SOCKET Socket)
 {
+	// Open the executable file
 	HANDLE hFile = CreateFileA(
 		BINARY_PATH,
 		GENERIC_READ,
@@ -42,12 +46,11 @@ bool SendFile(SOCKET Socket)
 
 	DWORD iBytesRead;
 	BOOL bResult;
-	int i = 0;
 	char sendbuf[DEFAULT_BUFLEN] = { 0 };
 
 	do
 	{
-		++i;
+		// Read the file
 		bResult = ReadFile(
 			hFile,
 			sendbuf,
@@ -56,12 +59,14 @@ bool SendFile(SOCKET Socket)
 			NULL
 		);
 
+		// Check if the end of file was reached
 		if (iBytesRead == 0 && bResult)
 		{
 			for (int k = 0; k < DEFAULT_BUFLEN; ++k)
 			{
 				sendbuf[k] = EOF;
 			}
+			// Send indicator of EOF
 			int iResult = send(Socket, sendbuf, DEFAULT_BUFLEN, 0);
 			break;
 		}

@@ -15,11 +15,6 @@ int main(int argc, char* argv[])
 	int iResult;
 	int recvbuflen = DEFAULT_BUFLEN;
 
-	// Validate the parameters
-	/*if (argc != 2) {
-		printf("usage: %s server-name\n", argv[0]);
-		return 1;
-	}*/
 
 	// Initialize Winsock
 	iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -74,12 +69,14 @@ int main(int argc, char* argv[])
 	// Receive until the peer closes the connection
 	do {
 
-		getInput(sendbuf, DEFAULT_BUFLEN);
+		getInput(sendbuf, DEFAULT_BUFLEN); // Get the command to send
 
 		iResult = send(ConnectSocket, sendbuf, static_cast<int>(strlen(sendbuf)) + 1, 0);
 
+		// If the command is update
 		if (isUpdate(sendbuf, DEFAULT_BUFLEN))
 		{
+			// Send the executable
 			if (!SendFile(ConnectSocket))
 			{
 				return -1;

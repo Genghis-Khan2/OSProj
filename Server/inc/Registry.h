@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Windows.h>
-#include <cstdio>
 
 constexpr const char* REGISTRY_START_PATH = R"(Software\Microsoft\Windows\CurrentVersion\Run)";
 

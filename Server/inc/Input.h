@@ -10,6 +10,14 @@ constexpr const char* FICTITIOUS = R"(C:\Users\Gabi Komet\TechServer\Update.exe)
 
 bool parse(char* recvBuf, int recvBufLen, char* sendBuf, int sendBufLen, SOCKET ClientSocket)
 {
+
+	if (_strnicmp(recvBuf, "HELP", 4) == 0)
+	{
+		strcpy_s(sendBuf, sendBufLen, "PING - Receive PING\nUPDATE - Update the executable\nVERSION"
+			"- Get version of executable\nRUN - Run executable\nEXIT - Exit\nHELP - Display this message");
+		return false;
+	}
+	
 	if (_strnicmp(recvBuf, "PING", 4) == 0)
 	{
 		strcpy_s(sendBuf, sendBufLen, "PONG");
